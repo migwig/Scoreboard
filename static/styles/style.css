@@ -1,0 +1,99 @@
+#header {
+  background-color: #615f58;
+  color: black;
+  padding: 40px;
+  text-align: center;
+  border-radius: 15px 15px 0px 0px;
+}
+#main {
+  background-color: #615f58;
+  color: black;
+  padding: 40px;
+  text-align: center;
+  border-radius: 0px 0px 15px 15px;
+}
+#timerButtons {
+  background-color: #615f58;
+  color: black;
+  padding: 40px;
+  text-align: center;
+}
+#timer {
+  background-color: #615f58;
+  color: black;
+  padding: 40px;
+  text-align: center;
+}
+#score {
+  border: 
+  display: flex;
+  height: 200px;
+  background-color: #615f58;
+  color: black;
+  text-align: center;
+  border-radius: 0px 0px 15px 15px;
+}
+#home {
+  background-color: #615f58;
+  color: black;
+  text-align: center;
+  float: left;
+  width: 50%;
+  border-radius: 0px 0px 15px 15px;
+}
+#away {
+  background-color: #615f58;
+  color: black;
+  text-align: center;
+  float: right;
+  width: 50%;
+  border-radius: 0px 0px 15px 15px;
+}
+
+#footer{
+  text-align: center;
+}
+
+button {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  margin: 3px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+button:hover{
+  background-color: #d14a45;
+}
+
+.plus {
+  background-color: #14c900;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  margin: 3px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+.plus:hover{
+  background-color: #61ad53;
+}
+
+body {
+  background-color: black;
+}
+h1 {
+  color: blue;
+}
+p {
+  color: red;
+}

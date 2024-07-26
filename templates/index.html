@@ -1,23 +1,49 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>LED Controller</title>
-		<style>
-			body {
-				font-family: sans-serif; margin: 64px; background-color: #222;
-				color: #EEE;
-			}
-		</style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css')}}">
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='images/favicon.ico')}}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static',filename='images/apple-touch-icon.png')}}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static',filename='images/favicon-32x32.png')}}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static',filename='images/favicon-16x16.png')}}">
+        <link rel="manifest"href="{{ url_for('static',filename='images/site.webmanifest')}}">
+		<title>Flames Scoreboard</title>
 		<script>
 			document.addEventListener("DOMContentLoaded", () => {
-				const button = document.getElementById("buttonInteract");
+				const timerStart = document.getElementById("timerStart");
+				const timerPause = document.getElementById("timerPause");
+				const homePlus = document.getElementById("homePlus");
+				const homeMinus = document.getElementById("homeMinus");
+				const awayPlus = document.getElementById("awayPlus");
+				const awayMinus = document.getElementById("awayMinus");
 				const outcomeText = document.getElementById("outcomeText");
+				
+				timerStart.addEventListener("click", () => {
+					timerStart.innerHTML = "Timer Timing?";
+					timerStart.setAttribute("disabled", "true");
 
-				button.addEventListener("click", () => {
-					button.innerHTML = "Loading...";
-					button.setAttribute("disabled", "true");
+					fetch("/timerStart").then(res => {
+						if (res.status !== 204) {
+							throw new Error(`Got a ${res.status} status code response.`);
+						}
 
-					fetch("/interact").then(res => {
+						outcomeText.innerHTML = "Request handled successfully!";
+						
+					})
+					.catch(err => {
+						outcomeText.innerHTML = `An error occurred: ${err.message}`;
+					})
+					.finally(() => {
+						timerStart.innerHTML = "Start Timer";
+						timerStart.removeAttribute("disabled");
+					});
+				});
+				timerPause.addEventListener("click", () => {
+					timerPause.innerHTML = "Loading...";
+					timerPause.setAttribute("disabled", "true");
+
+					fetch("/timerPause").then(res => {
 						if (res.status !== 204) {
 							throw new Error(`Got a ${res.status} status code response.`);
 						}
@@ -28,20 +54,174 @@
 						outcomeText.innerHTML = `An error occurred: ${err.message}`;
 					})
 					.finally(() => {
-						button.innerHTML = "Interact";
-						button.removeAttribute("disabled");
+						timerPause.innerHTML = "Pause Timer";
+						timerPause.removeAttribute("disabled");
+					});
+				});
+				timerStop.addEventListener("click", () => {
+					timerStop.innerHTML = "Timer Stopped";
+					timerStop.setAttribute("disabled", "true");
+
+					fetch("/timerStop").then(res => {
+						if (res.status !== 204) {
+							throw new Error(`Got a ${res.status} status code response.`);
+						}
+
+						outcomeText.innerHTML = "Request handled successfully!";
+						
+					})
+					.catch(err => {
+						outcomeText.innerHTML = `An error occurred: ${err.message}`;
+					})
+					.finally(() => {
+						timerStop.innerHTML = "Stop Timer";
+						timerStop.removeAttribute("disabled");
+					});
+				});
+				homePlus.addEventListener("click", () => {
+					homePlus.innerHTML = "Loading...";
+					homePlus.setAttribute("disabled", "true");
+
+					fetch("/homePlus").then(res => {
+						if (res.status !== 204) {
+							throw new Error(`Got a ${res.status} status code response.`);
+						}
+
+						outcomeText.innerHTML = "Request handled successfully!";
+					})
+					.catch(err => {
+						outcomeText.innerHTML = `An error occurred: ${err.message}`;
+					})
+					.finally(() => {
+						homePlus.innerHTML = "Home +";
+						homePlus.removeAttribute("disabled");
+					});
+				});
+				homeMinus.addEventListener("click", () => {
+					homeMinus.innerHTML = "Loading...";
+					homeMinus.setAttribute("disabled", "true");
+
+					fetch("/homeMinus").then(res => {
+						if (res.status !== 204) {
+							throw new Error(`Got a ${res.status} status code response.`);
+						}
+
+						outcomeText.innerHTML = "Request handled successfully!";
+					})
+					.catch(err => {
+						outcomeText.innerHTML = `An error occurred: ${err.message}`;
+					})
+					.finally(() => {
+						homeMinus.innerHTML = "Home -";
+						homeMinus.removeAttribute("disabled");
+					});
+				});
+				awayPlus.addEventListener("click", () => {
+					awayPlus.innerHTML = "Loading...";
+					awayPlus.setAttribute("disabled", "true");
+
+					fetch("/awayPlus").then(res => {
+						if (res.status !== 204) {
+							throw new Error(`Got a ${res.status} status code response.`);
+						}
+
+						outcomeText.innerHTML = "Request handled successfully!";
+					})
+					.catch(err => {
+						outcomeText.innerHTML = `An error occurred: ${err.message}`;
+					})
+					.finally(() => {
+						awayPlus.innerHTML = "Away +";
+						awayPlus.removeAttribute("disabled");
+					});
+				});
+				awayMinus.addEventListener("click", () => {
+					awayMinus.innerHTML = "Loading...";
+					awayMinus.setAttribute("disabled", "true");
+
+					fetch("/awayMinus").then(res => {
+						if (res.status !== 204) {
+							throw new Error(`Got a ${res.status} status code response.`);
+						}
+
+						outcomeText.innerHTML = "Request handled successfully!";
+					})
+					.catch(err => {
+						outcomeText.innerHTML = `An error occurred: ${err.message}`;
+					})
+					.finally(() => {
+						awayMinus.innerHTML = "Away -";
+						awayMinus.removeAttribute("disabled");
+					});
+				});
+				clearLEDs.addEventListener("click", () => {
+					clearLEDs.innerHTML = "Loading...";
+					clearLEDs.setAttribute("disabled", "true");
+
+					fetch("/clearLEDs").then(res => {
+						if (res.status !== 204) {
+							throw new Error(`Got a ${res.status} status code response.`);
+						}
+
+						outcomeText.innerHTML = "Request handled successfully!";
+					})
+					.catch(err => {
+						outcomeText.innerHTML = `An error occurred: ${err.message}`;
+					})
+					.finally(() => {
+						clearLEDs.innerHTML = "Clear LEDs";
+						clearLEDs.removeAttribute("disabled");
 					});
 				});
 			});
 		</script>
+		<script>
+        function updateTimer() {
+            fetch('/time')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('timer').textContent = data.remaining_time;
+                })
+                .catch(error => console.error('Error fetching time:', error));
+        }
+
+        // Update the timer every second
+        setInterval(updateTimer, 1000);
+
+        // Initial call to display time immediately when the page loads
+        window.onload = updateTimer;
+    </script>
 	</head>
 	<body>
-		<h2>LED Interaction</h2>
-		<p>
-			Click the button below to send a request to the Raspberry PI to
-			get it to do something!
-		</p>
-		<button id="buttonInteract">Interact</button>
-		<p id="outcomeText"></p>
+        <div id="header">
+            <img src="{{ url_for('static',filename='images/main_logo.png')}}" alt="Flames Logo">
+        </div>
+        <div id="main">   
+            <div id="timerButtons">
+                <h2>Remaining Time: <span id="timer">--:--</span></h2>
+                <button id="timerStart">Start Timer</button>
+                <button id="timerPause">Pause Timer</button>
+                <button id="timerStop">Stop Timer</button>
+            </div>
+            <div id="score">
+                <div id="home">
+                    <ul style="list-style-type:none;">
+                        <li><button id="homePlus" class="plus">Home +</button></li>
+                        <li><button id="homeMinus">Home -</button></li>
+                    </ul>	
+                </div>
+                <div id="away">
+                    <ul style="list-style-type:none;">
+                        <li><button id="awayPlus" class="plus">Away +</button></li>
+                        <li><button id="awayMinus">Away -</button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <p>Developed for Flames Ice hockey club by Gloverfield Studios</p>
+            <button id="clearLEDs">Clear LEDs</button>
+            <p id="outcomeText"></p>
+        </div>
 	</body>
 </html>
