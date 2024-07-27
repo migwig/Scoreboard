@@ -13,178 +13,56 @@
 			document.addEventListener("DOMContentLoaded", () => {
 				const timerStart = document.getElementById("timerStart");
 				const timerPause = document.getElementById("timerPause");
+				const timerStop = document.getElementById("timerStop");
 				const homePlus = document.getElementById("homePlus");
 				const homeMinus = document.getElementById("homeMinus");
 				const awayPlus = document.getElementById("awayPlus");
 				const awayMinus = document.getElementById("awayMinus");
 				const outcomeText = document.getElementById("outcomeText");
+				const clearLEDs = document.getElementById("clearLEDs");
 				
-				timerStart.addEventListener("click", () => {
-					timerStart.innerHTML = "Timer Timing?";
-					timerStart.setAttribute("disabled", "true");
-
-					fetch("/timerStart").then(res => {
-						if (res.status !== 204) {
+				const fetchAndUpdate = (url, button, text) => {
+					button.innerHTML = "Loading..";
+					button.setAttribute("disabled", "true");
+					
+					fetch(url).then(res => {
+						if (res.status !==204){
 							throw new Error(`Got a ${res.status} status code response.`);
 						}
-
-						outcomeText.innerHTML = "Request handled successfully!";
-						
-					})
-					.catch(err => {
-						outcomeText.innerHTML = `An error occurred: ${err.message}`;
-					})
-					.finally(() => {
-						timerStart.innerHTML = "Start Timer";
-						timerStart.removeAttribute("disabled");
-					});
-				});
-				timerPause.addEventListener("click", () => {
-					timerPause.innerHTML = "Loading...";
-					timerPause.setAttribute("disabled", "true");
-
-					fetch("/timerPause").then(res => {
-						if (res.status !== 204) {
-							throw new Error(`Got a ${res.status} status code response.`);
-						}
-
 						outcomeText.innerHTML = "Request handled successfully!";
 					})
 					.catch(err => {
 						outcomeText.innerHTML = `An error occurred: ${err.message}`;
 					})
 					.finally(() => {
-						timerPause.innerHTML = "Pause Timer";
-						timerPause.removeAttribute("disabled");
+						button.innerHTML = text;
+						button.removeAttribute("disabled");
 					});
-				});
-				timerStop.addEventListener("click", () => {
-					timerStop.innerHTML = "Timer Stopped";
-					timerStop.setAttribute("disabled", "true");
-
-					fetch("/timerStop").then(res => {
-						if (res.status !== 204) {
-							throw new Error(`Got a ${res.status} status code response.`);
-						}
-
-						outcomeText.innerHTML = "Request handled successfully!";
-						
-					})
-					.catch(err => {
-						outcomeText.innerHTML = `An error occurred: ${err.message}`;
-					})
-					.finally(() => {
-						timerStop.innerHTML = "Stop Timer";
-						timerStop.removeAttribute("disabled");
-					});
-				});
-				homePlus.addEventListener("click", () => {
-					homePlus.innerHTML = "Loading...";
-					homePlus.setAttribute("disabled", "true");
-
-					fetch("/homePlus").then(res => {
-						if (res.status !== 204) {
-							throw new Error(`Got a ${res.status} status code response.`);
-						}
-
-						outcomeText.innerHTML = "Request handled successfully!";
-					})
-					.catch(err => {
-						outcomeText.innerHTML = `An error occurred: ${err.message}`;
-					})
-					.finally(() => {
-						homePlus.innerHTML = "Home +";
-						homePlus.removeAttribute("disabled");
-					});
-				});
-				homeMinus.addEventListener("click", () => {
-					homeMinus.innerHTML = "Loading...";
-					homeMinus.setAttribute("disabled", "true");
-
-					fetch("/homeMinus").then(res => {
-						if (res.status !== 204) {
-							throw new Error(`Got a ${res.status} status code response.`);
-						}
-
-						outcomeText.innerHTML = "Request handled successfully!";
-					})
-					.catch(err => {
-						outcomeText.innerHTML = `An error occurred: ${err.message}`;
-					})
-					.finally(() => {
-						homeMinus.innerHTML = "Home -";
-						homeMinus.removeAttribute("disabled");
-					});
-				});
-				awayPlus.addEventListener("click", () => {
-					awayPlus.innerHTML = "Loading...";
-					awayPlus.setAttribute("disabled", "true");
-
-					fetch("/awayPlus").then(res => {
-						if (res.status !== 204) {
-							throw new Error(`Got a ${res.status} status code response.`);
-						}
-
-						outcomeText.innerHTML = "Request handled successfully!";
-					})
-					.catch(err => {
-						outcomeText.innerHTML = `An error occurred: ${err.message}`;
-					})
-					.finally(() => {
-						awayPlus.innerHTML = "Away +";
-						awayPlus.removeAttribute("disabled");
-					});
-				});
-				awayMinus.addEventListener("click", () => {
-					awayMinus.innerHTML = "Loading...";
-					awayMinus.setAttribute("disabled", "true");
-
-					fetch("/awayMinus").then(res => {
-						if (res.status !== 204) {
-							throw new Error(`Got a ${res.status} status code response.`);
-						}
-
-						outcomeText.innerHTML = "Request handled successfully!";
-					})
-					.catch(err => {
-						outcomeText.innerHTML = `An error occurred: ${err.message}`;
-					})
-					.finally(() => {
-						awayMinus.innerHTML = "Away -";
-						awayMinus.removeAttribute("disabled");
-					});
-				});
-				clearLEDs.addEventListener("click", () => {
-					clearLEDs.innerHTML = "Loading...";
-					clearLEDs.setAttribute("disabled", "true");
-
-					fetch("/clearLEDs").then(res => {
-						if (res.status !== 204) {
-							throw new Error(`Got a ${res.status} status code response.`);
-						}
-
-						outcomeText.innerHTML = "Request handled successfully!";
-					})
-					.catch(err => {
-						outcomeText.innerHTML = `An error occurred: ${err.message}`;
-					})
-					.finally(() => {
-						clearLEDs.innerHTML = "Clear LEDs";
-						clearLEDs.removeAttribute("disabled");
-					});
-				});
+				};
+				
+				timerStart.addEventListener("click", () => fetchAndUpdate("/timerStart", timerStart, "Start Timer"));
+				timerPause.addEventListener("click", () => fetchAndUpdate("/timerPause", timerPause, "Pause Timer"));
+				timerStop.addEventListener("click", () => fetchAndUpdate("/timerStop", timerStop, "Stop Timer"));
+				homePlus.addEventListener("click", () => fetchAndUpdate("/homePlus", homePlus, "Home +"));
+				homeMinus.addEventListener("click", () => fetchAndUpdate("/homeMinus", homeMinus, "Home -"));
+				awayPlus.addEventListener("click", () => fetchAndUpdate("/awayPlus", awayPlus, "Away +"));
+				awayMinus.addEventListener("click", () => fetchAndUpdate("/awayMinus", awayMinus, "Away -"));
+				clearLEDs.addEventListener("click", () => fetchAndUpdate("/clearLEDs", clearLEDs, "Clear LEDs"));
+							
 			});
 		</script>
 		<script>
         function updateTimer() {
-            fetch('/time')
+            fetch('/update')
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('timer').textContent = data.remaining_time;
+					document.getElementById('home_Score').textContent = data.home_Score;
+					document.getElementById('away_Score').textContent = data.away_Score;
+					
                 })
                 .catch(error => console.error('Error fetching time:', error));
         }
-
         // Update the timer every second
         setInterval(updateTimer, 1000);
 
@@ -198,7 +76,9 @@
         </div>
         <div id="main">   
             <div id="timerButtons">
-                <h2>Remaining Time: <span id="timer">--:--</span></h2>
+                <h2><span id="timer">--:--</span></h2>
+				<h3><span id="home_Score">Home: {{home_Score}}</span></h3>
+				<h3><span id="away_Score">Away: {{away_Score}}</span></h3>
                 <button id="timerStart">Start Timer</button>
                 <button id="timerPause">Pause Timer</button>
                 <button id="timerStop">Stop Timer</button>
