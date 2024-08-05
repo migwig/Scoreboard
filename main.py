@@ -25,6 +25,7 @@ timer = CountdownTimer()
 
 @app.route('/')
 def settings_page():
+	
 	return render_template('settings.html', settings=state.settings)
 
 @app.route('/settings' ,methods=['POST'])
@@ -51,7 +52,7 @@ def update():
 	if state.strip_status:
 		displayTimeRemaining(strip, int(remaining_time))
 	else:
-		clearStrip(strip)
+		displayTemerpature()
 	return jsonify({
 		'remaining_time': f"{minutes:02}:{seconds:02}",
 		'home_Score': state.home_score,
@@ -59,24 +60,6 @@ def update():
 		'home_Team': state.settings['home_team'],
 		'away_Team': state.settings['away_team']
 	})
-'''
-   if timer.running == True or timer.paused == True:
-        remaining_time = timer.get_remaining_time()
-        minutes, seconds = divmod(int(remaining_time), 60)
-        if stripStatus == True:
-            displayTimeRemaining(strip, int(remaining_time))
-        else:
-            clearStrip(strip)
-        return jsonify({'remaining_time': f"{minutes:02}:{seconds:02}",'home_Score': home_Score, 'away_Score': away_Score, 'home_Team': settings['home_team'], 'away_Team': settings['away_team']})
-    elif timer.running == False and timer.paused == False:
-        print(f"Period Time:",settings['period_time'])
-        startTime = settings['period_time']
-        remaining_time = startTime*60
-        print(remaining_time)
-        print(startTime)
-        minutes, seconds = divmod(int(remaining_time), 60)
-    return jsonify({'remaining_time': f"{minutes:02}:{seconds:02}",'home_Score': home_Score, 'away_Score': away_Score, 'home_Team': settings['home_team'], 'away_Team': settings['away_team']})
-'''
 	
 def get_remaining_time_details():
 	if timer.running or timer.paused:

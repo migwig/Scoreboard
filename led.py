@@ -1,6 +1,10 @@
 from rpi_ws281x import *
 import time
 from datetime import datetime
+import board
+import adafruit_dht
+
+sensor = adafruit_dht.DHT11(board.D4)
 
 # LED strip configuration:
 LED_COUNT      = 168   # Number of LED pixels.
@@ -44,6 +48,9 @@ array = [
         [A,B,C,F,G]
         ]
 
+degree = [A,B,G,F]
+C_Letter = [A,D,E,F]
+
 def displayCurrentTime(strip):
 	now = datetime.now()
 	hours = now.hour
@@ -57,41 +64,34 @@ def displayDigit(strip, digit, color):
         temp = array[digit][i]
         for x in range(temp[0], temp[1]):
             strip.setPixelColor(x, color)
-    #strip.show()
+
 
 def displaySecondDigit(strip, digit, color):
     for i in range (len(array[digit])):
         temp = array[digit][i]
         for x in range(int(temp[0]),int(temp[1])):
             strip.setPixelColor(x + (SEG_LEN*SEG_COUNT), color)
-    #strip.show()
+
 
 def displayThirdDigit(strip, digit, color):
     for i in range (len(array[digit])):
         temp = array[digit][i]
         for x in range(int(temp[0]),int(temp[1])):
             strip.setPixelColor(x + ((SEG_LEN*SEG_COUNT)*2), color)
-    #strip.show()
+
     
 def displayFourthDigit(strip, digit, color):
     for i in range (len(array[digit])):
         temp = array[digit][i]
         for x in range(int(temp[0]),int(temp[1])):
             strip.setPixelColor(x + ((SEG_LEN*SEG_COUNT)*3), color)
-    #strip.show()
-
-def displaySegment(strip, segrange, color, wait_ms=50):
-    for i in range(int(segrange[0]), int(segrange[1])):
-        strip.setPixelColor(i, color)
-    strip.show()
-
-
-# Define functions which animate LEDs in various ways.
-def displayRange(strip, segstart, color, wait_ms=50):
-    for i in range(SEG_LEN):
-        strip.setPixelColor(segstart + i, color)
-    strip.show()
-    
+			
+def displaySegment(strip, segment, display, color):
+	for i in range(len(display)):
+		temp = display[i]
+		for x in range(temp[0],temp[1]):
+			strip.setPixelColor(x + ((SEG_LEN*SEG_COUNT)*(segment-1)), color)
+		
 def clearStrip(strip):
     strip.begin()
     for i in range(strip.numPixels()):
@@ -100,10 +100,9 @@ def clearStrip(strip):
              
 
 def displayTimeRemaining(strip, timeRemaining):
-    # Intialize the library (must be called once before other functions).
     strip.begin()
-    mins, secs = divmod(timeRemaining, 60)  # Convert seconds to minutes and seconds
-    hours, mins = divmod(mins, 60)  # Convert minutes to hours and minutes
+    mins, secs = divmod(timeRemaining, 60)
+    hours, mins = divmod(mins, 60)
     toDisplay = '{:02d}{:02d}'.format(mins, secs)
     clearStrip(strip)
     displayDigit(strip, int(str(toDisplay)[0:1]), Color(0,0,125))
@@ -111,3 +110,14 @@ def displayTimeRemaining(strip, timeRemaining):
     displayThirdDigit(strip, int(str(toDisplay)[2:3]), Color(0,0,125))
     displayFourthDigit(strip, int(str(toDisplay)[3:4]), Color(0,0,125))
     strip.show()
+
+def displayTemerpature():
+	strip.begin()
+	temp = '{:02d}'.format(sensor.temperature)
+	humidity = sensor.humidity
+	clearStrip(strip)
+	displayDigit(strip, int(str(temp)[0:1]), Color(125,0,0))
+	displaySecondDigit(strip, int(str(temp)[1:2]), Color(125,0,0))
+	displaySegment(strip, 3, degree, Color(125,0,0))
+	displaySegment(strip, 4, C_Letter, Color(125,0,0))
+	strip.show()
