@@ -1,5 +1,7 @@
 from rpi_ws281x import *
 import time
+from datetime import datetime
+
 # LED strip configuration:
 LED_COUNT      = 168   # Number of LED pixels.
 LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
@@ -41,6 +43,14 @@ array = [
         [A,B,C,D,E,F,G],
         [A,B,C,F,G]
         ]
+
+def displayCurrentTime(strip):
+	now = datetime.now()
+	hours = now.hour
+	minutes = now.minute
+	total_seconds = hours * 3600 + minutes * 60
+	displayTimeRemaining(strip, int(total_seconds))
+
 
 def displayDigit(strip, digit, color):
     for i in range(len(array[digit])):

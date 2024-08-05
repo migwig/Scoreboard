@@ -47,8 +47,6 @@
 						.then(data => {
 							document.getElementById('home_Score').textContent = data.home_Score;
 							document.getElementById('away_Score').textContent = data.away_Score;
-							document.getElementById('home_Team').textContent = data.settings['home_team'];
-							document.getElementById('away_Team').textContent = data.away_Team;
 					})
 					.catch(error => console.error('Error fetching time:', error));
 				};
@@ -86,8 +84,8 @@
         <div id="main">   
             <div id="timerButtons">
                 <h2><span id="timer">--:--</span></h2>
-				<h3><span id="home_Team">Home</span>: <span id="home_Score">0</span></h3>
-				<h3><span id="away_Team">Away</span>: <span id="away_Score">0</span></h3>
+				<h3>Home Score: <span id="home_Score">0</span></h3>
+				<h3>Away Score: <span id="away_Score">0</span></h3>
                 <button id="timerStart">Start Timer</button>
                 <button id="timerPause">Pause Timer</button>
                 <button id="timerStop">Stop Timer</button>
@@ -110,12 +108,6 @@
         <div id="footer">
             <p>Developed for Flames Ice hockey club by Gloverfield Studios</p>
             <button id="clearLEDs">Clear LEDs</button>
-			<button onclick = "goBack()">Return</button>
-			<script>
-				function goBack() {
-					window.history.back();
-				}
-			</script>
             <p id="outcomeText"></p>
         </div>
 	</body>
