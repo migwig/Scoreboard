@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/settings_style.css')}}">
         <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='images/favicon.ico')}}">
         <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static',filename='images/apple-touch-icon.png')}}">
         <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static',filename='images/favicon-32x32.png')}}">
@@ -22,33 +23,41 @@
 	window.onload = updateTimer;</script>
 	</head>
 	<body>
-		<div id="header">
-            <img src="{{ url_for('static',filename='images/main_logo.png')}}" alt="Flames Logo">
-        </div>
-		<div id = "main">
-			<form action = "{{ url_for('save_settings') }}" method = "post">
-				<div>
-					<label for = "period_time">Period Time (minutes):</label>
-					<input type = "number" id = "period_time" name = "period_time" required>
-				</div>
-				<div>
-					<label for = "num_periods">Number of Periods:</label>
-					<input type = "number" id = "num_periods" name = "num_periods" required>
-				</div>
-				<div>
-					<label for = "break_time">Break Time (minutes)</label>
-					<input type = "number" id = "break_time" name = "break_time" required>
-				</div>
-				<div>
-					<label for = "home_team">Home Team Name:</label>
-					<input type = "text" id = "home_team" name = "home_team" required>
-				</div>
-				<div>
-					<label for = "away_team">Away Team Name:</label>
-					<input type = "text" id = "away_team" name = "away_team" required>
-				</div>
-				<button type = "submit"> Save Settings </button>
-			</form>
+		<div class="container">
+			<header>
+            	<img src="{{ url_for('static',filename='images/main_logo.png')}}" alt="Flames Logo">
+        	</header>
+			<main>
+				<section>
+					<h2>Settings</h2>
+					<form action = "{{ url_for('save_settings') }}" method = "post">
+						<div>
+							<label for = "period_time">Period Time (minutes):</label>
+							<input type = "number" id = "period_time" name = "period_time" required>
+						</div>
+						<div>
+							<label for = "num_periods">Number of Periods:</label>
+							<input type = "number" id = "num_periods" name = "num_periods" required>
+						</div>
+						<div>
+							<label for = "break_time">Break Time (minutes)</label>
+							<input type = "number" id = "break_time" name = "break_time" required>
+						</div>
+						<div>
+							<label for = "home_team">Home Team Name:</label>
+							<input type = "text" id = "home_team" name = "home_team" required>
+						</div>
+						<div>
+							<label for = "away_team">Away Team Name:</label>
+							<input type = "text" id = "away_team" name = "away_team" required>
+						</div>
+						<button type = "submit"> Save Settings </button>
+					</form>
+				</section>
+			</main>
+			<footer>
+				<p>&copy; 2024 Flames Scoreboard</p>
+			</footer>
 		</div>
 	</body>
 </html>

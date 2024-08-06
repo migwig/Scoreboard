@@ -44,6 +44,7 @@ class CountdownTimer:
         if self.running:
             return max(self.total_seconds - (time.time() - self.start_time - self.total_paused_duration), 0)
         return self.remaining_seconds
+	
     def set_countdown_minutes(self, countdown_minutes):
         self.total_seconds = countdown_minutes * 60
         self.remaining_seconds = self.total_seconds
@@ -52,3 +53,13 @@ class CountdownTimer:
         self.total_paused_duration = 0
         self.running = False
         self.paused = False
+
+'''
+	def run_timer(self, periods)
+		for i in range(periods)
+			self.start()
+			while self.get_remaining_time() > 0:
+				time.sleep(1)
+			self.stop()
+			print("interval time starts now")
+'''			

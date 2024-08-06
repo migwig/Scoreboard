@@ -22,10 +22,13 @@ class AppState:
 
 state = AppState()
 timer = CountdownTimer()
+strip.begin()
 
 @app.route('/')
 def settings_page():
-	
+	strip_status = False
+	timer.running = False
+	timer.paused = False
 	return render_template('settings.html', settings=state.settings)
 
 @app.route('/settings' ,methods=['POST'])
@@ -37,7 +40,6 @@ def save_settings():
 	state.settings['away_team'] = request.form['away_team']
 	state.start_time = state.settings['period_time']
 	timer.running = False
-	timer.paused = False
 	return redirect(url_for('scoreboard_page'))
 
 @app.route('/scoreboard')
@@ -52,7 +54,7 @@ def update():
 	if state.strip_status:
 		displayTimeRemaining(strip, int(remaining_time))
 	else:
-		displayTemerpature()
+		displayTemperature()
 	return jsonify({
 		'remaining_time': f"{minutes:02}:{seconds:02}",
 		'home_Score': state.home_score,

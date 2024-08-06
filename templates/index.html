@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
-	<head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css')}}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/indexcss.css')}}">
         <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='images/favicon.ico')}}">
         <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static',filename='images/apple-touch-icon.png')}}">
         <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static',filename='images/favicon-32x32.png')}}">
@@ -10,45 +11,51 @@
         <link rel="manifest"href="{{ url_for('static',filename='images/site.webmanifest')}}">
 		<title>Flames Scoreboard</title>
 		<script defer src="{{ url_for('static', filename='scripts/main.js') }}"></script>
-	</head>
-	<body>
-        <div id="header">
+</head>
+<body>
+    <div class="container">
+        <header>
             <img src="{{ url_for('static',filename='images/main_logo.png')}}" alt="Flames Logo">
-        </div>
-        <div id="main">   
-            <div id="timerButtons">
+        </header>
+        <main>
+            <section id="timerButtons">
                 <h2><span id="timer">--:--</span></h2>
-				<h3><span id="home_Team">Home</span>: <span id="home_Score">0</span></h3>
-				<h3><span id="away_Team">Away</span>: <span id="away_Score">0</span></h3>
+                <div class="team-scores">
+                    <h3><span id="home_Team">Home</span>: <span id="home_Score">0</span></h3>
+                    <h3><span id="away_Team">Away</span>: <span id="away_Score">0</span></h3>
+                </div>
                 <button id="timerStart">Start Timer</button>
                 <button id="timerPause">Pause Timer</button>
                 <button id="timerStop">Stop Timer</button>
-            </div>
-            <div id="score">
-                <div id="home">
-                    <ul style="list-style-type:none;">
-                        <li><button id="homePlus" class="plus">Home +</button></li>
-                        <li><button id="homeMinus">Home -</button></li>
-                    </ul>	
+            </section>
+            <div class="score">
+                <div class="score-group" id="home">
+                    <h3>Home</h3>
+                    <ul>
+                        <li><button id="homePlus" class="plus">+</button></li>
+                        <li><button id="homeMinus">-</button></li>
+                    </ul>
                 </div>
-                <div id="away">
-                    <ul style="list-style-type:none;">
-                        <li><button id="awayPlus" class="plus">Away +</button></li>
-                        <li><button id="awayMinus">Away -</button></li>
+                <div class="score-group" id="away">
+                    <h3>Away</h3>
+                    <ul>
+                        <li><button id="awayPlus" class="plus">+</button></li>
+                        <li><button id="awayMinus">-</button></li>
                     </ul>
                 </div>
             </div>
-        </div>
-        <div id="footer">
-            <p>Developed for Flames Ice hockey club by Gloverfield Studios</p>
+        </main>
+        <footer>
             <button id="clearLEDs">Clear LEDs</button>
-			<button onclick = "goBack()">Return</button>
-			<script>
-				function goBack() {
-					window.history.back();
-				}
-			</script>
+            <button onclick="goBack()">Return</button>
+			<p>Developed for Flames Ice Hockey Club by Gloverfield Studios</p>
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
             <p id="outcomeText"></p>
-        </div>
-	</body>
+        </footer>
+    </div>
+</body>
 </html>

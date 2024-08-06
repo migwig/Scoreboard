@@ -23,6 +23,8 @@ seconds = 120
 
 strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
 
+strip.begin()
+
 
 
 #define segments
@@ -100,7 +102,6 @@ def clearStrip(strip):
              
 
 def displayTimeRemaining(strip, timeRemaining):
-    strip.begin()
     mins, secs = divmod(timeRemaining, 60)
     hours, mins = divmod(mins, 60)
     toDisplay = '{:02d}{:02d}'.format(mins, secs)
@@ -111,7 +112,7 @@ def displayTimeRemaining(strip, timeRemaining):
     displayFourthDigit(strip, int(str(toDisplay)[3:4]), Color(0,0,125))
     strip.show()
 
-def displayTemerpature():
+def displayTemperature():
 	strip.begin()
 	temp = '{:02d}'.format(sensor.temperature)
 	humidity = sensor.humidity
