@@ -11,8 +11,17 @@
         <link rel="manifest"href="{{ url_for('static',filename='images/site.webmanifest')}}">
 		<title>Flames Scoreboard</title>
 		<script defer src="{{ url_for('static', filename='scripts/main.js') }}"></script>
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+				if(document.body.getAttribute('data-page') === 'scoreboard'){
+					fetch('/displayTimeRemaining')
+					.then(response => response.text())
+					.then(data => console.log(data));
+				}
+			});
+		</script>
 </head>
-<body>
+<body data-page = "{{ page }}">
     <div class="container">
         <header>
             <img src="{{ url_for('static',filename='images/main_logo.png')}}" alt="Flames Logo">
@@ -52,6 +61,9 @@
             <script>
                 function goBack() {
                     window.history.back();
+					fetch('/displayTemperature')
+					.then(response => response.text())
+					.then(data => console.log(data));
                 }
             </script>
             <p id="outcomeText"></p>

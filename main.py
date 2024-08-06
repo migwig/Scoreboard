@@ -22,14 +22,12 @@ class AppState:
 
 state = AppState()
 timer = CountdownTimer()
-strip.begin()
 
 @app.route('/')
 def settings_page():
-	strip_status = False
 	timer.running = False
 	timer.paused = False
-	return render_template('settings.html', settings=state.settings)
+	return render_template('settings.html', settings=state.settings, page='settings')
 
 @app.route('/settings' ,methods=['POST'])
 def save_settings():
@@ -39,14 +37,14 @@ def save_settings():
 	state.settings['home_team'] = request.form['home_team']
 	state.settings['away_team'] = request.form['away_team']
 	state.start_time = state.settings['period_time']
-	timer.running = False
+	state.strip_status = True
 	return redirect(url_for('scoreboard_page'))
 
 @app.route('/scoreboard')
 def scoreboard_page():
     remaining_time = timer.get_remaining_time()
     minutes, seconds = divmod(int(remaining_time), 60)
-    return render_template("index.html",home_Score=state.home_score,away_Score=state.away_score)
+    return render_template("index.html",home_Score=state.home_score,away_Score=state.away_score, page='scoreboard')
 
 @app.route('/update')
 def update():
@@ -62,6 +60,7 @@ def update():
 		'home_Team': state.settings['home_team'],
 		'away_Team': state.settings['away_team']
 	})
+	print (state.strip_status)
 	
 def get_remaining_time_details():
 	if timer.running or timer.paused:
@@ -74,7 +73,7 @@ def get_remaining_time_details():
 	
 @app.route("/timerStart")
 def timerStart():
-    state.strip_status = True
+#    state.strip_status = True
     timer.set_countdown_minutes(state.start_time)
     timer.start()
     return Response(status = 204)
@@ -86,7 +85,7 @@ def timerPause():
 
 @app.route("/timerStop")
 def timerStop():
-    state.stripStatus = False
+#    state.stripStatus = False
     timer.stop()
     return Response(status = 204)
 
@@ -115,6 +114,21 @@ def clearLEDs():
     state.strip_status = False
     clearStrip(strip)
     return Response(status = 204)
+
+@app.route('/displayTemperature')
+def display_temperature():
+	displayTemperature()
+	state.strip_status = False
+	return "Temperature displayed"
+
+@app.route('/displayTimeRemaining')
+def display_time_remaining():
+	state.strip_status = True
+	remaining_time = timer.get_remaining_time()
+	displayTimeRemaining(strip, int(remaining_time))
+	return "Time Remaining Displayed"
+
+
 
 def update_score(team, value):
 	if team == 'home':

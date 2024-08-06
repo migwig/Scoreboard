@@ -20,9 +20,19 @@
      };
         
 	setInterval(updateTimer, 1000);
-	window.onload = updateTimer;</script>
+	window.onload = updateTimer;
+		</script>
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+				if(document.body.getAttribute('data-page') === 'settings'){
+					fetch('/displayTemperature')
+					.then(response => response.text())
+					.then(data => console.log(data));
+				}
+			});
+		</script>
 	</head>
-	<body>
+	<body data-page = "{{ page }}">
 		<div class="container">
 			<header>
             	<img src="{{ url_for('static',filename='images/main_logo.png')}}" alt="Flames Logo">
