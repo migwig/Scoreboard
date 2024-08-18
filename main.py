@@ -1,27 +1,24 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, Response
-from timer import CountdownTimer
+from timer import *
 from rpi_ws281x import *
 from led import *
 import argparse
+import threading
+import time
+from settings import *
 
 app = Flask(__name__)
 
-class AppState:
-	def __init__(self):
-		self.settings = {
-			"period_time": 20, 
-			"num_periods": 3,
-			"break_time" : 15,
-			"home_team" : "Home",
-			"away_team" : "Away"
-		}
-		self.home_score = 0
-		self.away_score = 0
-		self.strip_status = False
-		self.start_time = 0
-
-state = AppState()
 timer = CountdownTimer()
+
+def background_update():  #this runs the physical display
+	while True:
+		print (state.timer_status)
+		if state.timer_status:
+			displayTimeRemaining(strip, int(state.display_time))
+		else:
+			displayTemperature()
+		time.sleep(1)
 
 @app.route('/')
 def settings_page():
@@ -48,11 +45,7 @@ def scoreboard_page():
 
 @app.route('/update')
 def update():
-	remaining_time, minutes, seconds = get_remaining_time_details()
-	if state.strip_status:
-		displayTimeRemaining(strip, int(remaining_time))
-	else:
-		displayTemperature()
+	minutes, seconds = divmod(int(state.display_time), 60)
 	return jsonify({
 		'remaining_time': f"{minutes:02}:{seconds:02}",
 		'home_Score': state.home_score,
@@ -64,19 +57,25 @@ def update():
 	
 def get_remaining_time_details():
 	if timer.running or timer.paused:
-		remaining_time = timer.get_remaining_time()
+		remaining_time = state.display_time
 	else:
 		state.start_time = state.settings['period_time']
 		remaining_time = state.start_time * 60
 	minutes, seconds = divmod(int(remaining_time), 60)
 	return remaining_time, minutes, seconds
-	
+
+#    timer.set_countdown_minutes(state.start_time)
+#    timer.start()
+
 @app.route("/timerStart")
 def timerStart():
-#    state.strip_status = True
-    timer.set_countdown_minutes(state.start_time)
-    timer.start()
-    return Response(status = 204)
+	if state.timer_status:
+		print("timer status true")
+		start_button_press_callback()
+	else:
+		state.timer_status = True
+		run_timers_with_interval(state.settings['num_periods'], state.settings['period_time'], state.settings['break_time'], start_button_press_callback)
+	return Response(status = 204)
 
 @app.route("/timerPause")
 def timerPause():
@@ -124,18 +123,22 @@ def display_temperature():
 @app.route('/displayTimeRemaining')
 def display_time_remaining():
 	state.strip_status = True
-	remaining_time = timer.get_remaining_time()
+	remaining_time = state.remaining_time
+	print(remaining_time)
 	displayTimeRemaining(strip, int(remaining_time))
 	return "Time Remaining Displayed"
 
-
-
 def update_score(team, value):
 	if team == 'home':
-		state.home_score += value
+		state.home_score = max(0, state.home_score + value)
 	elif team == 'away':
-		state.away_score += value
-	print(f"{team.capitalize()} Score:", state.home_score if team == 'home' else state.away_score)
+		state.away_score = max(0, state.away_score + value)
 
 if __name__ == '__main__':
+	#background update to display on the LEDs
+	thread = threading.Thread(target=background_update)
+	thread.daemon = True
+	thread.start()
+	
+	#start the web app
 	app.run(host="0.0.0.0")

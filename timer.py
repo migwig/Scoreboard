@@ -1,4 +1,5 @@
 import time
+from settings import *
 
 class CountdownTimer:
     def __init__(self, countdown_minutes=10):
@@ -54,12 +55,24 @@ class CountdownTimer:
         self.running = False
         self.paused = False
 
-'''
-	def run_timer(self, periods)
-		for i in range(periods)
-			self.start()
-			while self.get_remaining_time() > 0:
+def run_timers_with_interval(num_iterations, countdown_minutes, interval_seconds, start_button_press_callback):
+	for i in range(num_iterations):
+		start_button_press_callback()
+		
+		timer = CountdownTimer(countdown_minutes)
+		timer.start()
+		print("timer initialised")
+		while timer.get_remaining_time() > 0:
+			remaining_time = timer.get_remaining_time()
+			minutes, seconds = divmod(int(remaining_time), 60)
+			time.sleep(1)
+			state.display_time = remaining_time
+
+		if i < num_iterations - 1:
+			for remaining_interval in range(interval_seconds, 0, -1):
+				state.display_time = remaining_interval
+				minutes, seconds = divmod(remaining_interval, 60)
 				time.sleep(1)
-			self.stop()
-			print("interval time starts now")
-'''			
+				
+def start_button_press_callback():
+	return

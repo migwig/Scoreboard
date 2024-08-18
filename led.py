@@ -102,6 +102,7 @@ def clearStrip(strip):
              
 
 def displayTimeRemaining(strip, timeRemaining):
+    strip.begin()
     mins, secs = divmod(timeRemaining, 60)
     hours, mins = divmod(mins, 60)
     toDisplay = '{:02d}{:02d}'.format(mins, secs)
