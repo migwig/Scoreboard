@@ -1,3 +1,4 @@
+import threading
 import time
 from settings import *
 
@@ -55,24 +56,36 @@ class CountdownTimer:
         self.running = False
         self.paused = False
 
+button_press_event = threading.Event()		
+
 def run_timers_with_interval(num_iterations, countdown_minutes, interval_seconds, start_button_press_callback):
 	for i in range(num_iterations):
-		start_button_press_callback()
+		# Wait for button before starting timer
+		print(f"Waiting for button press to start Timer {i+1}")
+		button_press_event.wait()
+		button_press_event.clear()
 		
+		# Start the countdown timer
 		timer = CountdownTimer(countdown_minutes)
 		timer.start()
-		print("timer initialised")
+		print(f"Timer {i+1} initialised")
+		
+		# Run the timer until it stops
 		while timer.get_remaining_time() > 0:
 			remaining_time = timer.get_remaining_time()
 			minutes, seconds = divmod(int(remaining_time), 60)
 			time.sleep(1)
+			print(remaining_time)
 			state.display_time = remaining_time
-
+		
+		# Stop the timer
+		timer.stop()
+		state.display_time = 0
+		print(f"Timer {i+1} completed")
+		
+		# If there are more iterations left then run the break timer
 		if i < num_iterations - 1:
 			for remaining_interval in range(interval_seconds, 0, -1):
 				state.display_time = remaining_interval
 				minutes, seconds = divmod(remaining_interval, 60)
 				time.sleep(1)
-				
-def start_button_press_callback():
-	return

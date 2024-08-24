@@ -13,5 +13,6 @@ class AppState:
 		self.timer_status = False
 		self.start_time = 0
 		self.display_time = self.settings['period_time']
+		self.remaining_time = 0
 
 state = AppState()
